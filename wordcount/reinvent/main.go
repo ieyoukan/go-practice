@@ -10,15 +10,14 @@ func splitwords(text string) []string {
 	var current_word string
 	//inword := true
 
-	for i := 0; i < len(text); i++ {
-		char := string(text[i])
-		if char == " " {
+	for _, char := range text {
+		if char == ' ' || char == '　' {
 			if current_word != "" {
 				words = append(words, current_word)
 				current_word = ""
 			}
 		} else {
-			current_word += char
+			current_word += string(char)
 		}
 	}
 	if current_word != "" {
@@ -31,28 +30,27 @@ func WordCount(s string) map[string]int {
 
 	words := splitwords(s)
 
-	wordcount := make(map[string]int)
+	wordCount := make(map[string]int)
 	for _, word := range words {
-		wordcount[word]++
+		wordCount[word]++
 	}
 
-	return wordcount
+	return wordCount
 }
 
 func compareMaps(a, b map[string]int) bool {
 	if len(a) != len(b) {
 		return false
 	}
-	for i := range a {
-		if a[i] != b[i] {
+	for key := range a {
+		if a[key] != b[key] {
 			return false
 		}
 	}
 	return true
 }
 
-func WordCountTest(wc func(s string) map[string]int) {
-	text := "I am apple I am Pen youkan is kawaii pupulie is kawaii"
+func WordCountTest(wc func(s string) map[string]int, text string) {
 	wordcount := wc(text)
 
 	words := strings.Fields(text)
@@ -69,5 +67,9 @@ func WordCountTest(wc func(s string) map[string]int) {
 }
 
 func main() {
-	WordCountTest(WordCount)
+	text := "I am apple I am Pen youkan is kawaii pupulie is kawaii"
+	text2 := "猫と　ああああ　と　わわっわあw wwwww 8888"
+
+	WordCountTest(WordCount, text)
+	WordCountTest(WordCount, text2)
 }
